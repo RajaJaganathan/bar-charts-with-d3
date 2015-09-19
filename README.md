@@ -1,2 +1,2 @@
-# bar-charts-with-d3
-Simple bar chart application implementation with D3.
+# Bar charts with d3 js
+Simple bar charts implementation with D3 js.
