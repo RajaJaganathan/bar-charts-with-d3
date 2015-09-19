@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple bar chart with D3</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="libs/lodash.js"></script>
+    <script type="text/javascript" src="libs/d3.js"></script>
+    <script type="text/javascript">
+    var dataSet = _.shuffle(_.range(1, 20)),
+        w = 500,
+        h = 300;        
+
+    console.log("dataSet ", dataSet);
+
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+    var xScale = d3.scale.ordinal()
+        .domain(dataSet)
+        .rangeRoundBands([0, w],0.05);
+
+    var yScale = d3.scale.linear()
+        .domain([0, d3.max(dataSet)])
+        .range([0, h]);
+
+    svg.selectAll("rect")
+        .data(dataSet)
+        .enter()
+        .append("rect")
+        .attr("x", function(d, i) {            
+            return xScale(d);
+        })
+        .attr("y", function(d, i) {
+            return h - yScale(d);
+        })
+        .attr("width", xScale.rangeBand())
+        .attr("height", function(d, i) {
+            return yScale(d);
+        })
+        .attr("fill", function(d) {
+            return "rgb(0, 0, " + (d * 100) + ")";
+        });
+
+    svg.selectAll("text")
+        .data(dataSet)
+        .enter()
+        .append("text")
+        .text(function(d) {
+            return d;
+        })
+        .attr("x", function(d, i) {
+            return xScale(d) + xScale.rangeBand() / 4;
+        })
+        .attr("y", function(d, i) {
+            // bar to bottom to top view
+            return h - yScale(d) + 15;
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "14px")
+        .attr("fill", "white");
+    </script>
+</body>
+
+</html>
